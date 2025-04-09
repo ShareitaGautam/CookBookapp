@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
-        <!-- Recipe Image -->
+
         <ImageView
             android:id="@+id/recipe_image"
             android:layout_width="128dp"
@@ -23,7 +23,7 @@
             tools:src="@tools:sample/avatars"
             android:contentDescription="@string/recipe_image_description" />
 
-        <!-- Recipe Name -->
+
         <TextView
             android:id="@+id/recipe_name"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="@id/recipe_image"
             tools:text="@string/name" />
 
-        <!-- Cooking Time -->
+        
         <TextView
             android:id="@+id/recipe_time"
             android:layout_width="wrap_content"

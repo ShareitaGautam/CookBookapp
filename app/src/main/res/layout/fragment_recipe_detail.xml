@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Recipe Name -->
+
     <TextView
         android:id="@+id/recipe_name_detail"
         android:layout_width="0dp"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Recipe Name" />
 
-    <!-- Ingredients -->
+
     <TextView
         android:id="@+id/ingredients_label"
         android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="• Item 1\n• Item 2" />
 
-    <!-- Step-by-step Instructions -->
+
     <TextView
         android:id="@+id/steps_label"
         android:layout_width="wrap_content"
