@@ -50,9 +50,5 @@ class CookbookRecipeListFragment : Fragment() {
         binding.progressBar.isVisible = false
         binding.errorMessage.isVisible = false
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    
 }

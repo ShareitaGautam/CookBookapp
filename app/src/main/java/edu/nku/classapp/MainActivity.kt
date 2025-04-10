@@ -1,18 +1,29 @@
 package edu.nku.classapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
+import edu.nku.classapp.databinding.ActivityMainBinding
+import edu.nku.classapp.ui.CookbookRecipeListFragment
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        val db = FirebaseFirestore.getInstance()
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container_view, CookbookRecipeListFragment())
+            .setReorderingAllowed(true)
+            .commit()
 
 
+        //val db = FirebaseFirestore.getInstance()
         //Sample code on how to write to the firestore cloud database
         /*
         val user = hashMapOf(
@@ -29,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error adding document", e)
             }
-        */
 
-        //Sample code on how to write to the firestore cloud database
+
+        //Sample code on how to read to the firestore cloud database
         val usersCollection = db.collection("users")
         usersCollection.get()
             .addOnSuccessListener { result ->
@@ -44,5 +55,8 @@ class MainActivity : AppCompatActivity() {
                 // If there's an error, log it
                 Log.w("Firestore", "Error getting documents.", e)
             }
+
+
+         */
     }
 }
