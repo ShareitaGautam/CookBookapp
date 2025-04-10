@@ -1,4 +1,4 @@
-package edu.nku.classapp
+package edu.nku.classapp.model
 
 data class Recipe(
     val name: String,

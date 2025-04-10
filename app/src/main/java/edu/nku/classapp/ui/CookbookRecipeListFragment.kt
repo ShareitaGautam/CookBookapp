@@ -1,0 +1,58 @@
+package edu.nku.classapp.ui
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import edu.nku.classapp.databinding.FragmentRecipeListBinding
+import edu.nku.classapp.model.Recipe
+import edu.nku.classapp.ui.adapter.CookbookAdapter
+
+class CookbookRecipeListFragment : Fragment() {
+
+    private var _binding: FragmentRecipeListBinding? = null
+    private val binding get() = _binding!!
+
+    private val cookbookAdapter = CookbookAdapter { recipe: Recipe, position ->
+        // You can handle clicks here (optional)
+
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = cookbookAdapter
+        }
+
+        val sampleRecipes = listOf(
+            Recipe("Fried Rice", "Rice, Vegetables", "1. Cook rice\n2. Stir-fry\n3. Mix"),
+            Recipe("Toast", "Bread, Butter", "1. Toast\n2. Butter")
+        )
+
+        cookbookAdapter.refreshData(sampleRecipes)
+
+        binding.recyclerView.isVisible = true
+        binding.progressBar.isVisible = false
+        binding.errorMessage.isVisible = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
