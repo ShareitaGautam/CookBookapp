@@ -28,9 +28,12 @@ class CookbookRecipeAdapter(
         }
 
         fun bind(recipe: Recipe) {
-            binding.recipeName.text = "Name: ${recipe.name}"
-            binding.recipeTime.text = "Time: ${recipe.time}"
-            binding.recipeIngredients.text = "Ingredients: ${recipe.ingredients}"
+            binding.recipeName.text =
+                binding.root.context.getString(R.string.recipe_name, recipe.name)
+            binding.recipeTime.text =
+                binding.root.context.getString(R.string.recipe_time, recipe.time)
+            binding.recipeIngredients.text =
+                binding.root.context.getString(R.string.ingredients, recipe.ingredients)
 
             Glide.with(binding.root).load(R.drawable.ic_launcher_background)
                 .into(binding.recipeImage)

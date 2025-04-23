@@ -6,4 +6,7 @@
     <string name="time">30 minutes</string>
     <string name="favorite_button">Favorite button</string>
     <string name="an_unknown_error_occurred">an unknown error occurred</string>
+    <string name="recipe_name">Name: %s</string>
+    <string name="recipe_time">Time: %s</string>
+    <string name="ingredients">Ingredients: %s</string>
 </resources>
