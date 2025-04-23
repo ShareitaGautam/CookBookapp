@@ -3,6 +3,7 @@ package edu.nku.classapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import edu.nku.classapp.R
 import edu.nku.classapp.databinding.RecipeCardViewBinding
 import edu.nku.classapp.model.Recipe
@@ -31,13 +32,15 @@ class CookbookRecipeAdapter(
             binding.recipeTime.text = "Time: ${recipe.time}"
             binding.recipeIngredients.text = "Ingredients: ${recipe.ingredients}"
 
-            binding.recipeImage.setImageResource(R.drawable.ic_launcher_background) // replace with Glide call
+            Glide.with(binding.root).load(R.drawable.ic_launcher_background)
+                .into(binding.recipeImage)
 
-
-            binding.favoriteButton.setImageResource(
-                if (recipe.isFavorite) R.drawable.baseline_favorite_24
-                else R.drawable.baseline_favorite_border_24
-            )
+            Glide.with(binding.root)
+                .load(
+                    if (recipe.isFavorite) R.drawable.baseline_favorite_24
+                    else R.drawable.baseline_favorite_border_24
+                )
+                .into(binding.favoriteButton)
 
 
             binding.favoriteButton.setOnClickListener {
