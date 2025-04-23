@@ -17,9 +17,8 @@ class CookbookRecipeAdapter(
     inner class CookbookViewHolder(
         private val binding: RecipeCardViewBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         init {
-            binding.root.setOnClickListener {
+            itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     onRecipeClicked(recipeList[position], position)

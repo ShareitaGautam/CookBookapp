@@ -40,12 +40,19 @@ class CookbookRecipeListFragment : Fragment() {
 
         val sampleRecipes = listOf(
             Recipe(
+                "idplaceholder1",
                 "Fried Rice",
                 "Rice, Vegetables",
                 "1. Cook rice\n2. Stir-fry\n3. Mix",
                 time = "15 min"
             ),
-            Recipe("Toast", "Bread, Butter", "1. Toast\n2. Butter", time = "5 min")
+            Recipe(
+                "idplaceholder2",
+                "Toast",
+                "Bread, Butter",
+                "1. Toast\n2. Butter",
+                time = "5 min"
+            )
         )
 
         var showFavoritesOnly = false
