@@ -3,12 +3,14 @@ package edu.nku.classapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import edu.nku.classapp.R
 import edu.nku.classapp.databinding.RecipeCardViewBinding
 import edu.nku.classapp.model.Recipe
 
-class CookbookAdapter(
+
+class CookbookRecipeAdapter(
     private val onRecipeClicked: (recipe: Recipe, position: Int) -> Unit
-) : RecyclerView.Adapter<CookbookAdapter.CookbookViewHolder>() {
+) : RecyclerView.Adapter<CookbookRecipeAdapter.CookbookViewHolder>() {
 
     private val recipeList = mutableListOf<Recipe>()
 
@@ -26,10 +28,23 @@ class CookbookAdapter(
         }
 
         fun bind(recipe: Recipe) {
-            binding.recipeName.text = recipe.name
-            binding.recipeTime.text = "View Details"
+            binding.recipeName.text = "Name: ${recipe.name}"
+            binding.recipeTime.text = "Time: ${recipe.time}"
+            binding.recipeIngredients.text = "Ingredients: ${recipe.ingredients}"
+
+            binding.favoriteButton.setImageResource(
+                if (recipe.isFavorite) R.drawable.baseline_favorite_24
+                else R.drawable.baseline_favorite_border_24
+            )
+
+
+            binding.favoriteButton.setOnClickListener {
+                recipe.isFavorite = !recipe.isFavorite
+                notifyItemChanged(adapterPosition)
+            }
         }
     }
+
 
     fun refreshData(newRecipes: List<Recipe>) {
         recipeList.clear()
