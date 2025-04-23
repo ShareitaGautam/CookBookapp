@@ -57,11 +57,17 @@ class CookbookRecipeListFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filtered = if (showFavoritesOnly) {
                     sampleRecipes.filter {
-                        it.isFavorite && it.name.contains(newText.orEmpty(), ignoreCase = true)
+                        it.isFavorite && (it.name.contains(
+                            newText.orEmpty(),
+                            ignoreCase = true
+                        ) || it.ingredients.contains(newText.orEmpty(), ignoreCase = true))
                     }
                 } else {
                     sampleRecipes.filter {
-                        it.name.contains(newText.orEmpty(), ignoreCase = true)
+                        it.name.contains(
+                            newText.orEmpty(),
+                            ignoreCase = true
+                        ) || it.ingredients.contains(newText.orEmpty(), ignoreCase = true)
                     }
                 }
                 cookbookAdapter.refreshData(filtered)
