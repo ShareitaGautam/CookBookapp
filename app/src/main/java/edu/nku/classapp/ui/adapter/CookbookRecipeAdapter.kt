@@ -32,6 +32,9 @@ class CookbookRecipeAdapter(
             binding.recipeTime.text = "Time: ${recipe.time}"
             binding.recipeIngredients.text = "Ingredients: ${recipe.ingredients}"
 
+            binding.recipeImage.setImageResource(R.drawable.ic_launcher_background) // replace with Glide call
+
+
             binding.favoriteButton.setImageResource(
                 if (recipe.isFavorite) R.drawable.baseline_favorite_24
                 else R.drawable.baseline_favorite_border_24
@@ -42,6 +45,8 @@ class CookbookRecipeAdapter(
                 recipe.isFavorite = !recipe.isFavorite
                 notifyItemChanged(adapterPosition)
             }
+
+
         }
     }
 

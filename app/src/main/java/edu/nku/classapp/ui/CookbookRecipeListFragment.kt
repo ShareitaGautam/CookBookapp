@@ -17,7 +17,6 @@ class CookbookRecipeListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position ->
-        // You can handle clicks here (optional)
 
 
     }
