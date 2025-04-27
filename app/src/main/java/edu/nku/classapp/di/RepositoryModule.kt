@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import edu.nku.classapp.data.repository.FoodRepository
 import edu.nku.classapp.data.repository.FoodRepositoryReal
+import edu.nku.classapp.data.repository.ImgurPostRepository
+import edu.nku.classapp.data.repository.ImgurPostRepositoryReal
 import javax.inject.Singleton
 
 
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindFoodRepository(
         foodRepositoryReal: FoodRepositoryReal
     ): FoodRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindImgurPostRepository(
+        imgurPostRepositoryReal: ImgurPostRepositoryReal
+    ): ImgurPostRepository
 }

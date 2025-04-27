@@ -55,6 +55,10 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.3")
 
     implementation(libs.androidx.espresso.core)
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.activity:activity:1.10.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
