@@ -16,10 +16,9 @@ class CookbookRecipeListFragment : Fragment() {
     private var _binding: FragmentRecipeListBinding? = null
     private val binding get() = _binding!!
 
-    private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position ->
+    private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position -> }
 
-
-    }
+    private var originalRecipeList: List<Recipe> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,42 +37,28 @@ class CookbookRecipeListFragment : Fragment() {
             adapter = cookbookAdapter
         }
 
-        val sampleRecipes = listOf(
-            Recipe(
-                "idplaceholder1",
-                "Fried Rice",
-                "Rice, Vegetables",
-                "1. Cook rice\n2. Stir-fry\n3. Mix",
-                time = "15 min"
-            ),
-            Recipe(
-                "idplaceholder2",
-                "Toast",
-                "Bread, Butter",
-                "1. Toast\n2. Butter",
-                time = "5 min"
-            )
-        )
+        loadRecipesFromFirestore()
 
         var showFavoritesOnly = false
+
         binding.searchBar.setOnQueryTextListener(object :
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filtered = if (showFavoritesOnly) {
-                    sampleRecipes.filter {
-                        it.isFavorite && (it.name.contains(
-                            newText.orEmpty(),
-                            ignoreCase = true
-                        ) || it.ingredients.contains(newText.orEmpty(), ignoreCase = true))
+                    originalRecipeList.filter {
+                        it.isFavorite && (it.title.contains(newText.orEmpty(), ignoreCase = true) ||
+                                it.ingredients.any { ingredient ->
+                                    ingredient.contains(newText.orEmpty(), ignoreCase = true)
+                                })
                     }
                 } else {
-                    sampleRecipes.filter {
-                        it.name.contains(
-                            newText.orEmpty(),
-                            ignoreCase = true
-                        ) || it.ingredients.contains(newText.orEmpty(), ignoreCase = true)
+                    originalRecipeList.filter {
+                        it.title.contains(newText.orEmpty(), ignoreCase = true) ||
+                                it.ingredients.any { ingredient ->
+                                    ingredient.contains(newText.orEmpty(), ignoreCase = true)
+                                }
                     }
                 }
                 cookbookAdapter.refreshData(filtered)
@@ -81,28 +66,49 @@ class CookbookRecipeListFragment : Fragment() {
             }
         })
 
-
         binding.favoritesFilterButton.setOnClickListener {
             showFavoritesOnly = !showFavoritesOnly
             binding.favoritesFilterButton.text =
                 if (showFavoritesOnly) "Show All" else "Show Favorites"
 
             val filtered = if (showFavoritesOnly) {
-                sampleRecipes.filter { it.isFavorite }
+                originalRecipeList.filter { it.isFavorite }
             } else {
-                sampleRecipes
+                originalRecipeList
             }
 
             cookbookAdapter.refreshData(filtered)
         }
-
-
-
-        cookbookAdapter.refreshData(sampleRecipes)
-
-        binding.recyclerView.isVisible = true
-        binding.progressBar.isVisible = false
-        binding.errorMessage.isVisible = false
     }
 
+    private fun loadRecipesFromFirestore() {
+        binding.progressBar.isVisible = true
+        binding.recyclerView.isVisible = false
+        binding.errorMessage.isVisible = false
+
+        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+        val recipesCollection = db.collection("recipes")
+
+        recipesCollection.get()
+            .addOnSuccessListener { result ->
+                val recipeList = mutableListOf<Recipe>()
+                for (document in result) {
+                    val recipe = document.toObject(Recipe::class.java)
+                    recipeList.add(recipe)
+                }
+
+                originalRecipeList = recipeList
+                cookbookAdapter.refreshData(recipeList)
+
+                binding.progressBar.isVisible = false
+                binding.recyclerView.isVisible = true
+            }
+            .addOnFailureListener { e ->
+                binding.progressBar.isVisible = false
+                binding.errorMessage.isVisible = true
+                binding.errorMessage.text = "Error loading recipes: ${e.message}"
+            }
+    }
 }
+
+

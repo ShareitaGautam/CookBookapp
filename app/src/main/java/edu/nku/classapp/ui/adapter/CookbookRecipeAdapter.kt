@@ -29,13 +29,15 @@ class CookbookRecipeAdapter(
 
         fun bind(recipe: Recipe) {
             binding.recipeName.text =
-                binding.root.context.getString(R.string.recipe_name, recipe.name)
+                binding.root.context.getString(R.string.recipe_name, recipe.title)
             binding.recipeTime.text =
-                binding.root.context.getString(R.string.recipe_time, recipe.time)
+                binding.root.context.getString(R.string.recipe_time, recipe.time_estimate)
             binding.recipeIngredients.text =
-                binding.root.context.getString(R.string.ingredients, recipe.ingredients)
+                binding.root.context.getString(R.string.ingredients, recipe.ingredients.joinToString(", "))
 
-            Glide.with(binding.root).load(R.drawable.ic_launcher_background)
+            Glide.with(binding.root)
+                .load(recipe.image_ref)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(binding.recipeImage)
 
             Glide.with(binding.root)
@@ -55,6 +57,7 @@ class CookbookRecipeAdapter(
         }
     }
 
+    fun getData(): List<Recipe> = recipeList
 
     fun refreshData(newRecipes: List<Recipe>) {
         recipeList.clear()
