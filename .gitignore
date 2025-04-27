@@ -15,4 +15,4 @@
 local.properties
 /app/google-services.json
 /app/imgur_creds.json
-
+/app/imgur_client_id.txt
