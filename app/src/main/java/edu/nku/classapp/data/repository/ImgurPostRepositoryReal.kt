@@ -23,7 +23,9 @@ class ImgurPostRepositoryReal @Inject constructor(
                 ImgurPostApiResponse.Error("Image upload failed, response not successful.")
             }
         } catch (e: HttpException) {
-            ImgurPostApiResponse.Error("HTTP error occurred: ${e.message()}")
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = "HTTP error occurred. Code: ${e.code()}, Message: ${e.message()}, Body: $errorBody"
+            ImgurPostApiResponse.Error(errorMessage)
         } catch (e: Exception) {
             ImgurPostApiResponse.Error("An unknown error occurred: ${e.localizedMessage}")
         }

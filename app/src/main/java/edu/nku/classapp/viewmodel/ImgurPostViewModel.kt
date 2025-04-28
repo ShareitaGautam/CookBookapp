@@ -40,6 +40,9 @@ class ImgurPostViewModel @Inject constructor(
                 is ImgurPostApiResponse.Error -> {
                     _imgurPostState.value = ImgurPostState.Error
                     Log.e("ImgurPost", "Error uploading image: ${response.error}")
+                    Log.e("ImgurPost", "Error uploading image:")
+                    Log.e("ImgurPost", "Status code: ${response.statusCode}")
+                    Log.e("ImgurPost", "Error body: ${response.errorBody}")
                 }
                 is ImgurPostApiResponse.Success -> {
                     val imageLink = response.data.link

@@ -67,31 +67,11 @@ class AddNewRecipeFragment : Fragment() {
                         when (state) {
                             is ImgurPostViewModel.ImgurPostState.Success -> {
                                 val imageLink = state.imageLink
-
-                                val recipeData = hashMapOf(
-                                    "title" to title,
-                                    "author" to author,
-                                    "time_estimate" to timeEstimate,
-                                    "description" to description,
-                                    "ingredients" to ingredients,
-                                    "instructions" to instructions,
-                                    "image_ref" to imageLink
-                                )
-
-                                val db = FirebaseFirestore.getInstance()
-                                val recipesCollection = db.collection("recipes")
-
-                                recipesCollection.add(recipeData)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(requireContext(), "Recipe added successfully", Toast.LENGTH_SHORT).show()
-                                        requireActivity().supportFragmentManager.popBackStack()
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Toast.makeText(requireContext(), "Error adding recipe: ${e.message}", Toast.LENGTH_SHORT).show()
-                                    }
+                                postRecipeToDb(title, author, timeEstimate, description, ingredients, instructions, imageLink)
                             }
                             is ImgurPostViewModel.ImgurPostState.Error -> {
                                 Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
+                                postRecipeToDb(title, author, timeEstimate, description, ingredients, instructions, null)
                             }
                             is ImgurPostViewModel.ImgurPostState.Loading -> {}
                         }
@@ -99,6 +79,38 @@ class AddNewRecipeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun postRecipeToDb(
+        title: String,
+        author: String,
+        timeEstimate: String,
+        description: String,
+        ingredients: List<String>,
+        instructions: List<String>,
+        imageRef: String?
+    ) {
+        val recipeData = hashMapOf(
+            "title" to title,
+            "author" to author,
+            "time_estimate" to timeEstimate,
+            "description" to description,
+            "ingredients" to ingredients,
+            "instructions" to instructions,
+            "image_ref" to (imageRef ?: "null")
+        )
+
+        val db = FirebaseFirestore.getInstance()
+        val recipesCollection = db.collection("recipes")
+
+        recipesCollection.add(recipeData)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Recipe added successfully", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error adding recipe: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     fun convertImageToBase64(imageUri: Drawable): String {
