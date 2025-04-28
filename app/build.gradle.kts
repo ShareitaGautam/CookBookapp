@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.glide)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.code.scanner)
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.3")
 
     implementation(libs.androidx.espresso.core)
