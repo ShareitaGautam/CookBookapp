@@ -1,24 +1,27 @@
 package edu.nku.classapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.journeyapps.barcodescanner.CaptureActivity
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import dagger.hilt.android.AndroidEntryPoint
 import edu.nku.classapp.R
 import edu.nku.classapp.databinding.FragmentRecipeListBinding
 import edu.nku.classapp.model.Recipe
 import edu.nku.classapp.ui.adapter.CookbookRecipeAdapter
+import edu.nku.classapp.viewmodel.BarcodeViewModel
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CookbookRecipeListFragment : Fragment() {
-
     private var _binding: FragmentRecipeListBinding? = null
     private val binding get() = _binding!!
 
@@ -26,12 +29,16 @@ class CookbookRecipeListFragment : Fragment() {
 
     private var originalRecipeList: List<Recipe> = emptyList()
 
+    private val barcodeViewModel: BarcodeViewModel by viewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
+        setupObservers()
         return binding.root
     }
 
@@ -97,13 +104,44 @@ class CookbookRecipeListFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
     }
 
     private val scannerLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
         ScanContract()
-    ) {result ->
-        //Put what to do with scanner result here
+    ) { result ->
+        val barcode = result.contents
+        barcodeViewModel.fetchBarcodeData(barcode)
     }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            barcodeViewModel.state.collect { event ->
+                when (event) {
+                    is BarcodeViewModel.FoodState.Loading -> {
+                        binding.progressBar.isVisible = true
+                        binding.errorMessage.isVisible = false
+                    }
+
+                    is BarcodeViewModel.FoodState.Success -> {
+                        binding.progressBar.isVisible = false
+                        binding.errorMessage.isVisible = false
+                        binding.searchBar.isIconified = false
+                        binding.searchBar.setQuery(
+                            event.productName,
+                            false
+                        )
+                    }
+
+                    is BarcodeViewModel.FoodState.Failure -> {
+                        binding.progressBar.isVisible = false
+                        binding.errorMessage.isVisible = true
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun loadRecipesFromFirestore() {
         binding.progressBar.isVisible = true
@@ -134,5 +172,6 @@ class CookbookRecipeListFragment : Fragment() {
             }
     }
 }
+
 
 

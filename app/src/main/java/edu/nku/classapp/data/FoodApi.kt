@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface FoodApi {
-    @GET("/product/{barcode}")
-    suspend fun getProduct(@Path("barcode") barcode: Int): Response<FoodResponse>
+    @GET("product/{barcode}")
+    suspend fun getProduct(@Path("barcode") barcode: String): Response<FoodResponse>
 }

@@ -20,7 +20,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFoodApi(): FoodApi =
-        Retrofit.Builder().baseUrl("https://world.openfoodfacts.org/api/v2").addConverterFactory(
+        Retrofit.Builder().baseUrl("https://world.openfoodfacts.org/api/v2/").addConverterFactory(
             MoshiConverterFactory.create(
                 Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
             )
@@ -31,9 +31,11 @@ object AppModule {
     fun provideImgurApi(): ImgurApi =
         Retrofit.Builder()
             .baseUrl("https://api.imgur.com/")
-            .addConverterFactory(MoshiConverterFactory.create(
-                Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-            ))
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                )
+            )
             .build()
             .create(ImgurApi::class.java)
 }
