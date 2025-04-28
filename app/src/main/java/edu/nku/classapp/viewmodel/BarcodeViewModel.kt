@@ -21,11 +21,16 @@ class BarcodeViewModel @Inject constructor(
     fun fetchBarcodeData(barcode: String) = viewModelScope.launch {
         when (val response = foodRepository.getProduct(barcode)) {
             is FoodApiResponse.Success -> {
-                val productName =
-                    response.product.productNameEn ?: response.product.genericNameEn
-                    ?: response.product.abbreviatedProductName ?: response.product.packagingTextEn
-                    ?: response.product.productName ?: response.product.genericName
-                    ?: response.product.packagingText ?: "Ingredient not found";
+                val productName = when {
+                    !response.product.productNameEn.isNullOrEmpty() -> response.product.productNameEn
+                    !response.product.genericNameEn.isNullOrEmpty() -> response.product.genericNameEn
+                    !response.product.abbreviatedProductName.isNullOrEmpty() -> response.product.abbreviatedProductName
+                    !response.product.packagingTextEn.isNullOrEmpty() -> response.product.packagingTextEn
+                    !response.product.productName.isNullOrEmpty() -> response.product.productName
+                    !response.product.genericName.isNullOrEmpty() -> response.product.genericName
+                    !response.product.packagingText.isNullOrEmpty() -> response.product.packagingText
+                    else -> "Ingredient not found"
+                }
                 _state.value =
                     FoodState.Success(productName)
             }
