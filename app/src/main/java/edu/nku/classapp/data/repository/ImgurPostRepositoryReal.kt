@@ -11,10 +11,11 @@ class ImgurPostRepositoryReal @Inject constructor(
     private val imgurApi: ImgurApi
 ) : ImgurPostRepository {
 
-    private val clientId = "546c25a59c58ad7"
+    private val clientId = "4882244d93cda91"
 
     override suspend fun postImage(image: MultipartBody.Part, description: RequestBody, type: RequestBody, title: RequestBody): ImgurPostApiResponse {
         return try {
+
             val response = imgurApi.uploadImage(clientId, image, type, title, description)
 
             if (response.success) {
