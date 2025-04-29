@@ -1,6 +1,7 @@
 package edu.nku.classapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,10 +54,11 @@ class RecipeDetailFragment : Fragment() {
     }
 
     companion object {
-        private const val BUNDLE_ID = "id"
+        private const val BUNDLE_ID = "title"
 
-        fun newInstance(id: String) = RecipeDetailFragment().apply {
-            arguments = bundleOf(BUNDLE_ID to id)
+        fun newInstance(title: String) = RecipeDetailFragment().apply {
+            arguments = bundleOf(BUNDLE_ID to title)
+            Log.d("Recipe title", title)
         }
     }
 }

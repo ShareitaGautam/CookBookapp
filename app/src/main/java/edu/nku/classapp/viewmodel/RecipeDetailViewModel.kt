@@ -1,5 +1,6 @@
 package edu.nku.classapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nku.classapp.model.Recipe
@@ -12,10 +13,9 @@ class RecipeDetailViewModel : ViewModel() {
     private val _state = MutableStateFlow<RecipeState>(RecipeState.Loading)
     val state: StateFlow<RecipeState> = _state.asStateFlow()
 
-    fun fillData(id: String) = viewModelScope.launch {
+    fun fillData(title: String) = viewModelScope.launch {
         val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
         val recipesCollection = db.collection("recipes")
-        var originalRecipeList: List<Recipe> = emptyList()
 
         recipesCollection.get()
             .addOnSuccessListener { result ->
@@ -25,9 +25,10 @@ class RecipeDetailViewModel : ViewModel() {
                     recipeList.add(recipe)
                 }
 
-                originalRecipeList = recipeList
-                originalRecipeList.filter { it.id.equals(id, ignoreCase = true) }
-                _state.value = RecipeState.Success(originalRecipeList.first())
+                Log.d("List", recipeList.toString())
+                val filteredList = recipeList.filter { it.title.contains(title, ignoreCase = true) }
+                Log.d("List", filteredList.toString())
+                _state.value = RecipeState.Success(filteredList.first())
 
             }.addOnFailureListener {
                 _state.value = RecipeState.Failure

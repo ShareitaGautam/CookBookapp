@@ -29,7 +29,7 @@ class CookbookRecipeListFragment : Fragment() {
     private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position ->
         requireActivity().supportFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(R.id.fragment_container_view, RecipeDetailFragment.newInstance(recipe.id))
+            replace(R.id.fragment_container_view, RecipeDetailFragment.newInstance(recipe.title))
             addToBackStack(null)
         }
     }
