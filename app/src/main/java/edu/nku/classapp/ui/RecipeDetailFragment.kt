@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import edu.nku.classapp.R
 import edu.nku.classapp.databinding.FragmentRecipeDetailBinding
@@ -38,15 +40,64 @@ class RecipeDetailFragment : Fragment() {
             recipeDetailViewModel.state.collect { event ->
                 when (event) {
                     RecipeDetailViewModel.RecipeState.Failure -> {
+                        binding.progressBar.isVisible = false
+                        binding.errorMessage.isVisible = true
+                        binding.recipeImage.isVisible = false
+                        binding.recipeNameDetail.isVisible = false
+                        binding.recipeTime.isVisible = false
+                        binding.recipeAuthor.isVisible = false
+                        binding.recipeDescription.isVisible = false
+                        binding.recipeIngredientsDetail.isVisible = false
+                        binding.recipeStepsDetail.isVisible = false
                     }
 
                     RecipeDetailViewModel.RecipeState.Loading -> {
-
+                        binding.progressBar.isVisible = true
+                        binding.errorMessage.isVisible = false
+                        binding.recipeImage.isVisible = false
+                        binding.recipeNameDetail.isVisible = false
+                        binding.recipeTime.isVisible = false
+                        binding.recipeAuthor.isVisible = false
+                        binding.recipeDescription.isVisible = false
+                        binding.recipeIngredientsDetail.isVisible = false
+                        binding.recipeStepsDetail.isVisible = false
                     }
 
                     is RecipeDetailViewModel.RecipeState.Success -> {
+                        binding.progressBar.isVisible = false
+                        binding.errorMessage.isVisible = false
+                        binding.recipeImage.isVisible = true
+                        binding.recipeNameDetail.isVisible = true
+                        binding.recipeTime.isVisible = true
+                        binding.recipeAuthor.isVisible = true
+                        binding.recipeDescription.isVisible = true
+                        binding.recipeIngredientsDetail.isVisible = true
+                        binding.recipeStepsDetail.isVisible = true
+                        Glide.with(binding.root).load(event.recipe.image_ref)
+                            .into(binding.recipeImage)
                         binding.recipeNameDetail.text =
                             binding.root.context.getString(R.string.recipe_name, event.recipe.title)
+                        binding.recipeTime.text = binding.root.context.getString(
+                            R.string.recipe_time,
+                            event.recipe.time_estimate
+                        )
+                        binding.recipeAuthor.text = binding.root.context.getString(
+                            R.string.recipe_author,
+                            event.recipe.author
+                        )
+                        binding.recipeDescription.text = binding.root.context.getString(
+                            R.string.recipe_description,
+                            event.recipe.description
+                        )
+                        binding.recipeIngredientsDetail.text = binding.root.context.getString(
+                            R.string.ingredients,
+                            event.recipe.ingredients.joinToString(",")
+                        )
+                        binding.recipeStepsDetail.text =
+                            binding.root.context.getString(
+                                R.string.recipe_steps,
+                                event.recipe.instructions.joinToString(",")
+                            )
                     }
                 }
             }

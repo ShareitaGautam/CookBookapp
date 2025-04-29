@@ -9,4 +9,7 @@
     <string name="recipe_name">Name: %s</string>
     <string name="recipe_time">Time: %s</string>
     <string name="ingredients">Ingredients: %s</string>
+    <string name="recipe_steps">Steps: %s</string>
+    <string name="recipe_description">Description: %s</string>
+    <string name="recipe_author">Author: %s</string>
 </resources>
