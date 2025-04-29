@@ -1,6 +1,6 @@
 package edu.nku.classapp.ui.adapter
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,17 +14,13 @@ class CookbookRecipeAdapter(
     private val onRecipeClicked: (recipe: Recipe, position: Int) -> Unit
 ) : RecyclerView.Adapter<CookbookRecipeAdapter.CookbookViewHolder>() {
 
-    private val recipeList = mutableListOf<Recipe>()
-
     inner class CookbookViewHolder(
-        private val binding: RecipeCardViewBinding
+        private val binding: RecipeCardViewBinding,
+        private val onRecipeClicked: (position: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    onRecipeClicked(recipeList[position], position)
-                }
+                onRecipeClicked(adapterPosition)
             }
         }
 
@@ -34,7 +30,10 @@ class CookbookRecipeAdapter(
             binding.recipeTime.text =
                 binding.root.context.getString(R.string.recipe_time, recipe.time_estimate)
             binding.recipeIngredients.text =
-                binding.root.context.getString(R.string.ingredients, recipe.ingredients.joinToString(", "))
+                binding.root.context.getString(
+                    R.string.ingredients,
+                    recipe.ingredients.joinToString(", ")
+                )
 
             Glide.with(binding.root)
                 .load(recipe.image_ref)
@@ -56,11 +55,12 @@ class CookbookRecipeAdapter(
         }
     }
 
-    fun getData(): List<Recipe> = recipeList
+    private val recipes = mutableListOf<Recipe>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun refreshData(newRecipes: List<Recipe>) {
-        recipeList.clear()
-        recipeList.addAll(newRecipes)
+        recipes.clear()
+        recipes.addAll(newRecipes)
         notifyDataSetChanged()
     }
 
@@ -70,12 +70,15 @@ class CookbookRecipeAdapter(
             parent,
             false
         )
-        return CookbookViewHolder(binding)
+        return CookbookViewHolder(binding) { position ->
+            onRecipeClicked(recipes[position], position)
+        }
     }
 
     override fun onBindViewHolder(holder: CookbookViewHolder, position: Int) {
-        holder.bind(recipeList[position])
+        val recipe = recipes[position]
+        holder.bind(recipe)
     }
 
-    override fun getItemCount(): Int = recipeList.size
+    override fun getItemCount(): Int = recipes.size
 }

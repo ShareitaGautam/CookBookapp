@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,13 @@ class CookbookRecipeListFragment : Fragment() {
     private var _binding: FragmentRecipeListBinding? = null
     private val binding get() = _binding!!
 
-    private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position -> }
+    private val cookbookAdapter = CookbookRecipeAdapter { recipe: Recipe, position ->
+        requireActivity().supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.fragment_container_view, RecipeDetailFragment.newInstance(recipe.id))
+            addToBackStack(null)
+        }
+    }
 
     private var originalRecipeList: List<Recipe> = emptyList()
 
