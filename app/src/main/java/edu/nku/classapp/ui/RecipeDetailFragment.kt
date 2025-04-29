@@ -91,13 +91,12 @@ class RecipeDetailFragment : Fragment() {
                         )
                         binding.recipeIngredientsDetail.text = binding.root.context.getString(
                             R.string.ingredients,
-                            event.recipe.ingredients.joinToString(",")
+                            event.recipe.ingredients.joinToString("\n") { "• $it" }
                         )
-                        binding.recipeStepsDetail.text =
-                            binding.root.context.getString(
-                                R.string.recipe_steps,
-                                event.recipe.instructions.joinToString(",")
-                            )
+                        binding.recipeStepsDetail.text = binding.root.context.getString(
+                            R.string.recipe_steps,
+                            event.recipe.instructions.mapIndexed { index, step -> "${index + 1}. $step" }.joinToString("\n")
+                        )
                     }
                 }
             }

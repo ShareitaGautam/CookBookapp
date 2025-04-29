@@ -14,6 +14,8 @@ class RecipeDetailViewModel : ViewModel() {
     val state: StateFlow<RecipeState> = _state.asStateFlow()
 
     fun fillData(title: String) = viewModelScope.launch {
+        _state.value = RecipeState.Loading
+
         val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
         val recipesCollection = db.collection("recipes")
 
