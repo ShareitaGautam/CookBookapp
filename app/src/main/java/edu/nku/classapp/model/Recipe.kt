@@ -1,7 +1,6 @@
 package edu.nku.classapp.model
 
 data class Recipe(
-    val id: String = "",
     val title: String = "",
     val image_ref: String = "",
     val author: String = "",

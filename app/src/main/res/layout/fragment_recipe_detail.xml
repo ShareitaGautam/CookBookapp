@@ -4,31 +4,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/recipe_image"
+        android:minHeight="300dp"
+        android:maxHeight="400dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/recipe_image_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
     <TextView
         android:id="@+id/recipe_name_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Recipe Name"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/recipe_image"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/recipe_author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_name_detail"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
+
+
+    <TextView
+        android:id="@+id/recipe_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_author"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/recipe_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_time"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/recipe_ingredients_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Ingredients go here"
-        app:layout_constraintTop_toBottomOf="@id/recipe_name_detail"
+        app:layout_constraintTop_toBottomOf="@id/recipe_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/recipe_steps_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Steps go here"
         app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_detail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/an_unknown_error_occurred"
+        android:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
